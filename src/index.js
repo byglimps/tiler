@@ -1,13 +1,24 @@
-import { createCollage } from "./tiler";
-import * as path from "path";
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+const { PORT = 3000, APP_NAME = "TILER" } = process.env;
+import create from "./create";
 
-const files = [
-  "fixtures/input1.jpg",
-  "fixtures/input2.jpg",
-  "fixtures/input3.jpg"
-];
-const brand = "fixtures/brand.jpg";
+const app = express();
+app.use(cors());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
+app.use("/tmp", express.static("tmp"));
 
-// createCollage(files, brand)
-//   .then(collage => console.log({ collage }))
-//   .catch(console.log);
+app.post("/create", create);
+
+app.listen(PORT, err => {
+  if (err) {
+    console.error(err);
+  }
+
+  if (__DEV__) {
+    console.log("> in development");
+  }
+  console.log(`> ${APP_NAME} listening on port ${PORT}`);
+});

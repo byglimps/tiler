@@ -3,8 +3,6 @@ import uuid from "uuid/v1";
 
 const WIDTH = 1024;
 const HEIGHT = 768;
-// const WIDTH = 1600;
-// const HEIGHT = 900;
 const PADDING = 24;
 
 const BORDER_COLORS = {

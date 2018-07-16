@@ -1,5 +1,6 @@
 import Jimp from "jimp";
 import uuid from "uuid/v1";
+import { resolve as path_resolve } from "path";
 
 const WIDTH = 1024;
 const HEIGHT = 768;
@@ -11,9 +12,9 @@ const BORDER_COLORS = {
 };
 
 /**
- * 
- * @param {number} topX 
- * @param {number} topY 
+ *
+ * @param {number} topX
+ * @param {number} topY
  */
 const makeCoords = (topX, topY) => ({
   x: topX,
@@ -37,7 +38,7 @@ const getDestInfo = () => {
   const fileName = `c_${uuid()}.jpg`;
   return {
     file_name: fileName,
-    file_path: `tmp/${fileName}`
+    file_path: path_resolve(`tmp/${fileName}`)
   };
 };
 

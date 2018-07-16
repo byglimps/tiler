@@ -1,7 +1,8 @@
+import "./env";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-const { PORT = 3000, APP_NAME = "TILER" } = process.env;
+const { PORT = 3001, APP_NAME = "TILER" } = process.env;
 import create from "./create";
 
 const app = express();

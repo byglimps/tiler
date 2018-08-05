@@ -6,6 +6,8 @@ import { createCollage } from "./tiler";
 import upload from "./upload";
 import log from "./logger";
 
+const { DEVELOPMENT, PORT } = process.env;
+
 const cleanUp = async images => {
   return Promise.all(images.map(rm));
 };
@@ -45,7 +47,7 @@ const createStory = async (storyImages, brandImageUrl) => {
   return collage;
 };
 
-const validateReq = (images, brand, event_name) => {
+const validateReq = (images, brand, eventName) => {
   return new Promise((resolve, reject) => {
     var err = [];
     if (!images || images.length < 3) {
@@ -54,10 +56,10 @@ const validateReq = (images, brand, event_name) => {
       });
     }
     if (!brand) {
-      err.push({ brand_image: "The url to a brand image should be provided." });
+      err.push({ brandImage: "The url to a brand image should be provided." });
     }
-    if (!event_name) {
-      err.push({ event_name: "An event_name should be provided" });
+    if (!eventName) {
+      err.push({ eventName: "An eventName should be provided" });
     }
 
     if (err.length > 0) {
@@ -68,17 +70,33 @@ const validateReq = (images, brand, event_name) => {
   });
 };
 
+const makeDevUrl = filePath => {
+  return `localhost:${PORT}/tmp/${filePath}`;
+};
+
 const create = async (req, res) => {
   try {
     let body = req.body;
-    let { story: storyImages, brand_image, event_name } = body;
-    await validateReq(storyImages, brand_image, event_name);
+    let { story: storyImages, brandImage, eventName } = body;
+    await validateReq(storyImages, brandImage, eventName);
 
-    let story = await createStory(storyImages, brand_image);
-    let uploadInfo = await upload(story.file_path, story.file_name, event_name);
-    await rm(story.file_path);
-    
-    res.status(200).json({ success: true, collage: uploadInfo.Location });
+    let story = await createStory(storyImages, brandImage);
+
+    if (DEVELOPMENT) {
+      return res
+        .status(200)
+        .json({ success: true, collage: makeDevUrl(story.file_name) });
+    } else {
+      let uploadInfo = await upload(
+        story.file_path,
+        story.file_name,
+        eventName
+      );
+      await rm(story.file_path);
+      return res
+        .status(200)
+        .json({ success: true, collage: uploadInfo.Location });
+    }
   } catch (e) {
     log(e);
     res.status(400).json({ success: false, error: e });

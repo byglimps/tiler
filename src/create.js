@@ -6,7 +6,7 @@ import { createCollage } from "./tiler";
 import upload from "./upload";
 import log from "./logger";
 
-const { DEVELOPMENT, PORT } = process.env;
+const { DEVELOPMENT, HOST = "http://localhost:3001" } = process.env;
 
 const cleanUp = async images => {
   return Promise.all(images.map(rm));
@@ -71,7 +71,7 @@ const validateReq = (images, brand, eventName) => {
 };
 
 const makeDevUrl = filePath => {
-  return `localhost:${PORT}/tmp/${filePath}`;
+  return `${HOST}/tmp/${filePath}`;
 };
 
 const create = async (req, res) => {

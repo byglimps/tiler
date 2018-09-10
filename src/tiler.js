@@ -110,7 +110,7 @@ export const createCollage = async (files, brand) => {
   try {
     let { image_width, image_height } = calculateDims();
     let coords = calculateCoords(image_width, image_height, PADDING);
-    let canvas = await makeImg(WIDTH, HEIGHT, BORDER_COLORS.black);
+    let canvas = await makeImg(WIDTH, HEIGHT, BORDER_COLORS.white);
 
     for (var idx = 0; idx < paths.length; idx++) {
       let path = paths[idx];

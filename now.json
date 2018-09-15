@@ -1,0 +1,10 @@
+{
+  "name": "glimps-tiler",
+  "env": {
+    "PORT": "3001",
+    "APP_NAME": "TILER",
+    "BUCKET_NAME": "tilegram",
+    "DEVELOPMENT": "false",
+    "TMP_DIR": "/tmp"
+  }
+}

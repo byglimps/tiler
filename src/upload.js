@@ -14,7 +14,12 @@ const uploadToS3 = (path, bucket, destination) => {
   return new Promise((resolve, reject) => {
     let imageStream = createReadStream(path);
     s3.upload(
-      { Bucket: bucket, Key: destination, Body: imageStream },
+      {
+        Bucket: bucket,
+        Key: destination,
+        Body: imageStream,
+        ContentType: "image/jpeg"
+      },
       (err, data) => {
         if (err) {
           reject(err);
@@ -26,16 +31,16 @@ const uploadToS3 = (path, bucket, destination) => {
 };
 
 /**
- * 
- * @param {string} path 
- * @param {string} fileName 
- * @param {string} eventName 
+ *
+ * @param {string} path
+ * @param {string} fileName
+ * @param {string} eventName
  */
 const upload = async (path, fileName, eventName) => {
-    const directory = eventName;
-    const s3Path = `${directory}/${fileName}`;
-    let s3Upload = await uploadToS3(path, BUCKET_NAME, s3Path);
-    return s3Upload;
+  const directory = eventName;
+  const s3Path = `${directory}/${fileName}`;
+  let s3Upload = await uploadToS3(path, BUCKET_NAME, s3Path);
+  return s3Upload;
 };
 
 export default upload;

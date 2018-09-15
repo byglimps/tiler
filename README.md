@@ -9,6 +9,15 @@ Running this service will expose do two things:
 - Expose the main public endpoint `/create` to be used by consumers to create glimpses.
 - Serve created glimpses under a local `/tmp` directory for testing purposes.
 
+## Deploying with now 
+
+This required having the correct aws keys set up as now secrets. 
+Then run: 
+
+```
+now -e AWS_ACCESS_KEY_ID=@aws_access_key_id -e AWS_SECRET_ACCESS_KEY=@aws_secret_access_key
+```
+
 ### POST `/create`
 
 This endpoint accepts 3 images in base64 format, a url to an additional images, and an event name in order to create a glimps and upload it to the correct location in an Amazon S3 bucket. As a response it returns the public url to that glimps. 
